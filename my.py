@@ -1,10 +1,15 @@
+"""
+蠕虫
+"""
+
 from bs4 import BeautifulSoup
 import utils.http
 import mask.constants as mc
 
-url = "https://www.baidu.com"
+url = "http://zb.lubanjianye.com"
 header = mc.common_user_agent
 header["refresh"] = url
+header["Host"] = url
 cookies = "BD_UPN=12314753; BDUSS=EVLVlp3N1BYUGFnY2FYT3d1VHl0a08zNlU5clNXZ3h6UjBFa094aFJjekNZZ0JkSVFBQU" \
           "FBJCQAAAAAAAAAAAEAAAA8ZNcxbGF1dmluc29uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" \
           "AAAAAAAAAAAAAAAAAAMLV2FzC1dhcN; BIDUPSID=233FB42423D4114C16DD521412344C6B; PSTM=1559646786; _" \
