@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import utils.http
 import mask.constants as mc
 
-url = "http://zb.lubanjianye.com"
+url = "http://www.514544.com"
 header = mc.common_user_agent
 header["refresh"] = url
 header["Host"] = url
