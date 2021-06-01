@@ -1,29 +1,48 @@
 """
 蠕虫
 """
+import json
 
-from bs4 import BeautifulSoup
-import utils.http
 import mask.constants as mc
+import utils.http
 
-url = "http://www.514544.com"
+host = "https://www.mihuashi.com"
 header = mc.common_user_agent
-header["refresh"] = url
-header["Host"] = url
-cookies = "BD_UPN=12314753; BDUSS=EVLVlp3N1BYUGFnY2FYT3d1VHl0a08zNlU5clNXZ3h6UjBFa094aFJjekNZZ0JkSVFBQU" \
-          "FBJCQAAAAAAAAAAAEAAAA8ZNcxbGF1dmluc29uAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" \
-          "AAAAAAAAAAAAAAAAAAMLV2FzC1dhcN; BIDUPSID=233FB42423D4114C16DD521412344C6B; PSTM=1559646786; _" \
-          "_cfduid=dfd0d3a7d543d800e9cf20ddb9d0459771560991332; BAIDUID=8D8D112547DF86F4AE6884219807337" \
-          "7:FG=1; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; BD_CK_SAM=1; PSINO=1; ispeed=1; COOKIE_SESSION" \
-          "=316_0_7_2_4_8_1_1_4_3_3_1_227172_0_0_0_1561338269_0_1561339160%7C9%230_0_1561339160%7C1; delPe" \
-          "r=1; H_PS_645EC=6415j2DcN1b3Ov7YjxA%2F6zX3VR%2B4ZvAYoHMBeYY%2BhcGKzDl%2Fm8gAYddpkN8; ispeed_ls" \
-          "m=5; BD_HOME=1; H_PS_PSSID=26525_1455_21123_29135_29238_28518_29099_29131_29369_28833_29220; s" \
-          "ug=0; sugstore=0; ORIGIN=0; bdime=0"
+# header["authority"] = 'www.mihuashi.com'
+# header["method"] = 'GET'
+# header["scheme"] = 'https'
+header[
+    "accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+header["accept-language"] = "zh-CN,zh;q=0.9"
+header["accept-encoding"] = "gzip, deflate, br"
+header["sec-ch-ua"] = "\" Not A;Brand\";v=\"99\", \"Chromium\";v=\"90\", \"Google Chrome\";v=\"90\""
+header["sec-ch-ua-mobile"] = "?0"
+header["sec-fetch-dest"] = "document"
+header["sec-fetch-mode"] = "navigate"
+header["sec-fetch-site"] = "none"
+header["sec-fetch-user"] = "?1"
+cookies = "__auc=812371f8179c5d5d1efde79b15f; sajssdk_2015_cross_new_user=1; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22179c5d5dd121f0-00df5a99c33ad3-2363163-2073600-179c5d5dd138ba%22%2C%22%24device_id%22%3A%22179c5d5dd121f0-00df5a99c33ad3-2363163-2073600-179c5d5dd138ba%22%2C%22props%22%3A%7B%22%24latest_referrer%22%3A%22%22%2C%22%24latest_referrer_host%22%3A%22%22%2C%22%24latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%7D%7D; _ga=GA1.2.69100424.1622521799; _gid=GA1.2.640807596.1622521799; __asc=674b3592179c62de9371b6a9e73; _gat=1"
 cookie_dict = {i.split("=")[0]: i.split("=")[-1] for i in cookies.split("; ")}
-r = utils.http.get(url, headers=mc.common_user_agent, cookies=cookie_dict)
 
-# 创建 Beautiful Soup 对象
-html = BeautifulSoup(r.content.decode(), "lxml")
+links = []
+for i in range(1000):
+    try:
+        path = '/api/v1/artworks/search?page=' + str(i + 1) + '&type=recent'
+        header["path"] = path
+        url = host + path
+        r = utils.http.get(url, headers=header, cookies=cookie_dict)
+        if r.status_code == 200:
+            r_dic = json.loads(r.text)
+            for e in r_dic["artworks"]:
+                links.append(e["url"])
+    except:
+        continue
 
-# 格式化输出 soup 对象的内容
-print(html.prettify)
+try:
+    filename = open('C:\\Users\\Administrator\\Downloads', 'w')  # dict转txt
+    for i in links:
+        filename.write(i + '\n')
+
+    filename.close()
+except:
+    pass

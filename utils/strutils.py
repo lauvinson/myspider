@@ -35,7 +35,7 @@ def parse_linux_conf_to_dict(file):
     """
     try:
         linux_type_dict = dict()
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             linux_type_list = f.read().strip().split('\n')
     except IOError:
         pass

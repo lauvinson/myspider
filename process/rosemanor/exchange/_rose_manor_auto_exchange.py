@@ -16,7 +16,7 @@ from utils.strutils import parse_name_equals_value_to_dict, parse_name_equals_va
 """
 
 # 驱动配置
-driver_conf_file = open(file='../../../driver.conf')
+driver_conf_file = open(file='../../../driver.conf', encoding='utf-8')
 driver_arr = driver_conf_file.read().split("; ")
 driver_conf_dict = parse_linux_conf_to_dict('../../../driver.conf')
 
